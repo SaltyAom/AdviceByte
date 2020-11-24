@@ -1,8 +1,10 @@
-require('dotenv').config()
+require('dotenv').config();
 
 
-const express = require('express')
-const app = express()
+const express = require('express');
+const passport = require('./auth/passport.config.js');
+const app = express();
+
 // const mysql = require('mysql')
 // const db = mysql.createConnection({
 
@@ -14,12 +16,15 @@ const app = express()
 
 // })
 
-const knex = require('./db/knex');
+const session = require('express-session');
+const knex = require('./db/db');
 const knexSessionStore = require('connect-session-knex')(session);
 const store = new KnexSessionStore({
   knex: knex,
   tablename: "sessions"
 });
+
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -31,21 +36,27 @@ app.use(
 
 
 
-db.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+// db.connect(function (err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+// });
 
 
-db.query('SELECT * FROM Learning_Style', function (error, results, fields) {
-  if (error) throw error;
-  console.log('The solution is: ', results);
-});
+// db.query('SELECT * FROM Learning_Style', function (error, results, fields) {
+//   if (error) throw error;
+//   console.log('The solution is: ', results);
+// });
 
-app.get('/', function (req, res) {
-  res.send('hello world')
-})
-db.end();
+// app.get('/', function (req, res) {
+//   res.send('hello world')
+// })
+// db.end();
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//app.use("", appRoutes);
+//app.use("/api", apiRoutes);
 
 
 app.listen('3000', () => {

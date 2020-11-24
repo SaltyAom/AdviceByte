@@ -1,5 +1,5 @@
-modulue.exports = require('knex')({
-    client: 'mysql2',
+module.exports = require('knex')({
+    client: 'mysql',
     connection: {
         host: process.env.DB_IP,
         database: process.env.DB_NAME,

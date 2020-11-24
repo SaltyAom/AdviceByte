@@ -32,7 +32,7 @@ passport.use('local-login', new LocalStrategy({
 passport.serializeUser((user, done) => {
     done(null, user);
 })
-passport.deserializeUser((id, done) => {
+passport.deserializeUser(async (id, done) => {
     const user = await User.findOneById(id);
     done(null, user);
 })
